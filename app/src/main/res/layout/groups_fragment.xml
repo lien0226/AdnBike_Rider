@@ -22,43 +22,16 @@
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/floating_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp"
-        android:background="@color/purple_700"
-        android:clickable="true"
-        app:srcCompat="@drawable/ic_add" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/editButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/addButton"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="19dp"
-        android:background="@color/purple_700"
-        android:clickable="true"
-        app:srcCompat="@drawable/ic_add" />
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/floatingActionButton"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="19dp"
-        android:background="@color/purple_700"
-        android:clickable="true"
-        app:srcCompat="@drawable/ic_add" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </RelativeLayout>
