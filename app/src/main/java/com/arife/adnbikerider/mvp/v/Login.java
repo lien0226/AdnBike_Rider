@@ -109,7 +109,7 @@ public class Login extends AppCompatActivity implements LoginView,View.OnClickLi
         if (this.ContentLogin!=null){
             TransitionManager.beginDelayedTransition(this.ContentLogin);
             ShowHide(true);
-            Toasty.error(this, error);
+            Toasty.error(this, error, Toasty.LENGTH_SHORT).show();
         }
     }
 
