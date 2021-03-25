@@ -7,10 +7,14 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Spinner;
 
 import com.arife.adnbikerider.R;
 
 public class CreateGroup extends AppCompatActivity {
+
+    private Spinner spinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
