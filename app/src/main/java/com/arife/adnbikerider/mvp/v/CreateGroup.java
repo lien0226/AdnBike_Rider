@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -29,6 +30,7 @@ public class CreateGroup extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
+                overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);

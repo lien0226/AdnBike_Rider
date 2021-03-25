@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.arife.adnbikerider.R;
 import com.arife.adnbikerider.mvp.v.CreateGroup;
+import com.arife.adnbikerider.mvp.v.Login;
+import com.arife.adnbikerider.mvp.v.Register;
 import com.github.clans.fab.FloatingActionButton;
 
 import es.dmoral.toasty.Toasty;
@@ -34,7 +36,8 @@ public class FragmentGroups extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.create_group:
-
+                startActivity(new Intent(FragmentGroups.this.getActivity(), CreateGroup.class));
+                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
                 break;
         }
     }
