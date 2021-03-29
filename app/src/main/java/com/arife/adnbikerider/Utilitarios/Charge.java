@@ -53,4 +53,12 @@ public class Charge {
         return map;
     }
 
+    public Map genCity(LoginModel loginModel){
+        Map<String, Object> map = new HashMap<>();
+        map.put("loggin",loginModel.getUsername());
+        map.put("password",loginModel.getPassword());
+
+        return map;
+    }
+
 }

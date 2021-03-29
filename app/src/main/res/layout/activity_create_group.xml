@@ -72,8 +72,7 @@
                         android:id="@+id/spinner_city"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/blue_border_rounded_cornwe"></com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+                        android:layout_margin="5dp"></com.toptoche.searchablespinnerlibrary.SearchableSpinner>
 
 
                         <RadioGroup
