@@ -1,9 +1,29 @@
 package com.arife.adnbikerider.mvc.m;
 
 public class GroupModel {
+    private String opcion;
+    private int id;
     private String GroupName;
     private String GroupDescription;
-    private int Photo;
+    private String Ubigeo;
+    private String tipo;
+    private String codEstado;
+
+    public String getOpcion() {
+        return opcion;
+    }
+
+    public void setOpcion(String opcion) {
+        this.opcion = opcion;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getGroupName() {
         return GroupName;
@@ -21,11 +41,27 @@ public class GroupModel {
         GroupDescription = groupDescription;
     }
 
-    public int getPhoto() {
-        return Photo;
+    public String getUbigeo() {
+        return Ubigeo;
     }
 
-    public void setPhoto(int photo) {
-        Photo = photo;
+    public void setUbigeo(String ubigeo) {
+        Ubigeo = ubigeo;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getCodEstado() {
+        return codEstado;
+    }
+
+    public void setCodEstado(String codEstado) {
+        this.codEstado = codEstado;
     }
 }

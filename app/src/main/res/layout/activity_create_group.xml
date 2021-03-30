@@ -76,6 +76,7 @@
 
 
                         <RadioGroup
+                            android:id="@+id/rgTipoGrupo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -83,6 +84,7 @@
                             android:layout_gravity="center">
 
                             <RadioButton
+                                android:id="@+id/rbPublico"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Publico"
@@ -94,6 +96,7 @@
                                 android:layout_margin="10dp"/>
 
                             <RadioButton
+                                android:id="@+id/rbPrivado"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Privado"
@@ -105,6 +108,15 @@
                                 android:layout_margin="10dp"/>
 
                         </RadioGroup>
+
+                    <Button
+                        android:id="@+id/btnSaveGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_login"
+                        android:text="Guardar"
+                        android:textColor="@color/white"
+                        android:layout_gravity="center"/>
 
                 </LinearLayout>
 

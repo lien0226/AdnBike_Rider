@@ -1,6 +1,7 @@
 package com.arife.adnbikerider.Utilitarios;
 
 import com.arife.adnbikerider.AppData.Sesion;
+import com.arife.adnbikerider.mvc.m.GroupModel;
 import com.arife.adnbikerider.mvc.m.LoginModel;
 import com.arife.adnbikerider.mvc.m.UserModel;
 
@@ -57,6 +58,21 @@ public class Charge {
         Map<String, Object> map = new HashMap<>();
         map.put("loggin",loginModel.getUsername());
         map.put("password",loginModel.getPassword());
+
+        return map;
+    }
+
+    public Map genGroup(GroupModel groupModel){
+        this.sesion = Sesion.getInstance();
+        Map<String, Object> map = new HashMap<>();
+        map.put("opcion",groupModel.getOpcion());
+        map.put("id",String.valueOf(groupModel.getId()));
+        map.put("nomgrupo",groupModel.getGroupName());
+        map.put("desgrupo",groupModel.getGroupDescription());
+        map.put("ubigeo",groupModel.getUbigeo());
+        map.put("tgrupo",groupModel.getTipo());
+        map.put("codestado",groupModel.getCodEstado());
+        map.put("usuario",this.sesion.readSesion().getUsername());
 
         return map;
     }
