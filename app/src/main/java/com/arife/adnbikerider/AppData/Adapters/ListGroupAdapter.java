@@ -21,13 +21,13 @@ import java.util.List;
 public class ListGroupAdapter extends RecyclerView.Adapter<ListGroupAdapter.MyViewHolder> {
 
     private List<GroupModel> listGroup;
-    private List<GroupModel> listGroupAll;
+    //private List<GroupModel> listGroupAll;
     private Context context;
 
     public ListGroupAdapter(List<GroupModel> listGroup, Context context) {
         this.listGroup = listGroup;
         this.context = context;
-        this.listGroupAll = new ArrayList<>(listGroup);
+        //this.listGroupAll = new ArrayList<>(listGroup);
     }
 
     @NonNull
@@ -40,12 +40,14 @@ public class ListGroupAdapter extends RecyclerView.Adapter<ListGroupAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
+        final GroupModel groupModel = this.listGroup.get(position);
+        holder.groupName.setText(groupModel.getGroupName());
+        holder.descriptionGroup.setText(groupModel.getGroupDescription());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return this.listGroup.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

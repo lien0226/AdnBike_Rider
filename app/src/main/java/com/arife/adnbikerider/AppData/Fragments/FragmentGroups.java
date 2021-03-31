@@ -2,25 +2,43 @@ package com.arife.adnbikerider.AppData.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.arife.adnbikerider.AppData.Adapters.ListGroupAdapter;
+import com.arife.adnbikerider.AppData.Sesion;
 import com.arife.adnbikerider.R;
+import com.arife.adnbikerider.Utilitarios.Charge;
+import com.arife.adnbikerider.mvc.m.GroupModel;
+import com.arife.adnbikerider.mvc.m.RestModel;
+import com.arife.adnbikerider.mvp.m.interactor.Group.ListGroupInteractorImpl;
+import com.arife.adnbikerider.mvp.m.interfaz.ListGroups.ListGroupPresenter;
+import com.arife.adnbikerider.mvp.m.interfaz.ListGroups.ListGroupView;
+import com.arife.adnbikerider.mvp.p.Groups.ListGroupPresenterImpl;
 import com.arife.adnbikerider.mvp.v.CreateGroup;
-import com.arife.adnbikerider.mvp.v.Login;
-import com.arife.adnbikerider.mvp.v.Register;
 import com.github.clans.fab.FloatingActionButton;
+
+import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
-public class FragmentGroups extends Fragment implements View.OnClickListener {
+import static com.arife.adnbikerider.Utilitarios.Charge.Link_Base;
+
+public class FragmentGroups extends Fragment implements ListGroupView,View.OnClickListener {
     private View v;
     private FloatingActionButton create_group;
+    private ListGroupPresenter listGroupPresenter;
+    private RecyclerView groupRecycler;
+    private ListGroupAdapter listGroupAdapter;
 
     @Nullable
     @Override
@@ -29,6 +47,9 @@ public class FragmentGroups extends Fragment implements View.OnClickListener {
         this.v = inflater.inflate(R.layout.groups_fragment, container, false);
         this.create_group = v.findViewById(R.id.create_group);
         this.create_group.setOnClickListener(this);
+        this.listGroupPresenter = new ListGroupPresenterImpl(this, new ListGroupInteractorImpl());
+        this.listGroupPresenter.onGetGroup(this.ChargueData());
+        this.groupRecycler = v.findViewById(R.id.group_recycler);
         return v;
     }
 
@@ -40,5 +61,24 @@ public class FragmentGroups extends Fragment implements View.OnClickListener {
                 getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
                 break;
         }
+    }
+
+    @Override
+    public void OnSuccesListGroup(List<GroupModel> listgroup) {
+        this.listGroupAdapter = new ListGroupAdapter(listgroup, this.getActivity().getApplicationContext());
+        this.groupRecycler.setAdapter(listGroupAdapter);
+        this.groupRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity().getApplicationContext()));
+    }
+
+    @Override
+    public void OnErrorListGroup(String error) {
+        Log.e("sin datos", error);
+    }
+
+    public RestModel ChargueData(){
+        RestModel restModel = new RestModel();
+        restModel.setContext(this.getActivity().getApplicationContext());
+        restModel.setLink(Charge.getInstance().genGetGroup());
+        return restModel;
     }
 }

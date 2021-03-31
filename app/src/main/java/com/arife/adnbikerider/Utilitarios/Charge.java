@@ -77,4 +77,12 @@ public class Charge {
         return map;
     }
 
+    public String genGetGroup(){
+        String aurl="get_groups";
+        this.sesion = Sesion.getInstance();
+
+        String url =  Link_Base+aurl+"?usuario="+this.sesion.readSesion().getUsername();
+        return url;
+    }
+
 }
