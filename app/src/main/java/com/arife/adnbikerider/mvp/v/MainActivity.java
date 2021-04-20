@@ -11,10 +11,11 @@ import com.arife.adnbikerider.AppData.Adapters.ViewPagerAdapter;
 import com.arife.adnbikerider.AppData.Fragments.FragmentGroups;
 import com.arife.adnbikerider.AppData.Fragments.FragmentMyRoutes;
 import com.arife.adnbikerider.AppData.Fragments.FragmentPost;
+import com.arife.adnbikerider.AppData.Fragments.PendingMove;
 import com.arife.adnbikerider.R;
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PendingMove {
     private TabLayout tabLayoutHome;
     private ViewPager viewPagerHome;
     private ViewPagerAdapter pagerAdapter;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        this.pagerAdapter.AddFragment(new FragmentGroups(),"");
+        this.pagerAdapter.AddFragment(new FragmentGroups(this),"");
         this.pagerAdapter.AddFragment(new FragmentMyRoutes(),"");
         this.pagerAdapter.AddFragment(new FragmentPost(),"");
 
@@ -45,5 +46,10 @@ public class MainActivity extends AppCompatActivity {
         this.tabLayoutHome.getTabAt(0).setIcon(R.drawable.ic_network);
         this.tabLayoutHome.getTabAt(1).setIcon(R.drawable.ic_placeholder);
         this.tabLayoutHome.getTabAt(2).setIcon(R.drawable.ic_social_media);
+    }
+
+    @Override
+    public void PendingMoveAction() {
+        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
     }
 }

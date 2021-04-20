@@ -30,7 +30,7 @@ public class ListGroupInteractorImpl implements ListGroupInteractor, ServerRestR
     public void toSuccessRest(String Response) {
         if (Response!=null){
             JSONObject jsonObject = null;
-            Log.e("tagResponse", Response);
+            //Log.e("tagResponse", Response);
             try {
                 jsonObject = new JSONObject(Response);
                 JSONArray jsonArray = null;
@@ -38,12 +38,13 @@ public class ListGroupInteractorImpl implements ListGroupInteractor, ServerRestR
                 if (jsonObject.getString("error").equals("0")){
                     jsonArray = jsonObject.getJSONArray("data");
                     List<GroupModel> listGroup = new ArrayList<>();
-                    Log.e("tagarray", jsonArray.toString());
+                    //Log.e("tagarray", jsonArray.toString());
                     for (int i=0; i<jsonArray.length();i++){
                         JSONObject job = jsonArray.getJSONObject(i);
                         GroupModel groupModel = new GroupModel();
                         groupModel.setId(job.getInt("IdGrupo"));
                         groupModel.setGroupName(job.getString("NombreGrupo"));
+                        groupModel.setGroupDescription(job.getString("DescripcionGrupo"));
                         listGroup.add(groupModel);
                     }
                     this.onFinishListGroup.OnSucces(listGroup);

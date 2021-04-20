@@ -1,6 +1,8 @@
 package com.arife.adnbikerider.mvc.m;
 
-public class GroupModel {
+import java.io.Serializable;
+
+public class GroupModel implements Serializable {
     private String opcion;
     private int id;
     private String GroupName;

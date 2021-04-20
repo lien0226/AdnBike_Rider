@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AdnBikeRider">
-        <activity android:name=".mvp.v.CreateGroup"></activity>
+        <activity android:name=".mvp.v.CreateRoute"></activity>
+        <activity android:name=".mvp.v.GroupRoutes" />
+        <activity android:name=".mvp.v.CreateGroup" />
         <activity android:name=".mvp.v.Verify" />
         <activity android:name=".mvp.v.SplashActivity" />
         <activity android:name=".mvp.v.Register" />

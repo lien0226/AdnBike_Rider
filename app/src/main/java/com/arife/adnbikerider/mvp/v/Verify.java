@@ -38,11 +38,11 @@ public class Verify extends AppCompatActivity implements UserView, View.OnClickL
         this.btnConfirm.setOnClickListener(this);
         this.userPresenter = new UserPresenterImpl(this, new UserInteractorImpl());
 
-        Bundle bundle = getIntent().getExtras();
+            Bundle bundle = getIntent().getExtras();
 
-        if (bundle!=null){
-            userModel = (UserModel) bundle.getSerializable("UserModel");
-        }
+            if (bundle!=null){
+                userModel = (UserModel) bundle.getSerializable("UserModel");
+            }
 
 
     }

@@ -33,7 +33,7 @@ import es.dmoral.toasty.Toasty;
 
 import static com.arife.adnbikerider.Utilitarios.Charge.Link_Base;
 
-public class FragmentGroups extends Fragment implements ListGroupView,View.OnClickListener {
+public class FragmentGroups extends Fragment implements ListGroupView,View.OnClickListener{
     private View v;
     private FloatingActionButton create_group;
     private ListGroupPresenter listGroupPresenter;
@@ -65,7 +65,7 @@ public class FragmentGroups extends Fragment implements ListGroupView,View.OnCli
 
     @Override
     public void OnSuccesListGroup(List<GroupModel> listgroup) {
-        this.listGroupAdapter = new ListGroupAdapter(listgroup, this.getActivity().getApplicationContext());
+        this.listGroupAdapter = new ListGroupAdapter(listgroup, this.getActivity().getApplicationContext(),this.pendingMove );
         this.groupRecycler.setAdapter(listGroupAdapter);
         this.groupRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity().getApplicationContext()));
     }
@@ -80,5 +80,11 @@ public class FragmentGroups extends Fragment implements ListGroupView,View.OnCli
         restModel.setContext(this.getActivity().getApplicationContext());
         restModel.setLink(Charge.getInstance().genGetGroup());
         return restModel;
+    }
+
+    private PendingMove pendingMove;
+
+    public FragmentGroups(PendingMove pendingMove) {
+        this.pendingMove = pendingMove;
     }
 }

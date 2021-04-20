@@ -3,4 +3,7 @@
     <string name="confirmar">Confirmar</string>
     <string name="tienes_tu_codigo_de_verificacion">¿Tienes tu codigo de verificacion?</string>
     <string name="ingrese_su_c_digo_de_4_d_gitos">Ingrese su código de 4 dígitos</string>
+    <string name="description_group">Description Group</string>
+    <string name="group_name">Group Name</string>
+    <string name="name">Name</string>
 </resources>

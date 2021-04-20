@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/adapterGetTomas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:layout_marginStart="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/IdRuta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/DatosRuta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:autoSizeMaxTextSize="80sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:text="Datos de la Ruta"
+                android:textColor="@color/white"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:background="@drawable/blue_rounded_route"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/nameRoute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="32dp"
+                android:autoSizeMaxTextSize="80sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:text="Ruta extrema chincha alta - laran"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/DatosRuta"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/descRoute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:text="Descripcion"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/nameRoute"
+                app:layout_constraintTop_toBottomOf="@+id/nameRoute"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/Informacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:autoSizeMaxTextSize="80sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/blue_rounded_route"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Informacion"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/DatosRuta"
+                app:layout_constraintTop_toBottomOf="@+id/descRoute" />
+
+            <TextView
+                android:id="@+id/hourIni"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="2dp"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:text="Hora Inicio:"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/Informacion"
+                app:layout_constraintTop_toBottomOf="@+id/Informacion" />
+
+            <TextView
+                android:id="@+id/timeIni"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="4dp"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:text="2020-04-06 15:26"
+                app:layout_constraintStart_toEndOf="@+id/hourIni"
+                app:layout_constraintTop_toBottomOf="@+id/Informacion" />
+
+            <TextView
+                android:id="@+id/hourFin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:text="Hora Fin:"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/hourIni"
+                app:layout_constraintTop_toBottomOf="@+id/hourIni" />
+
+            <TextView
+                android:id="@+id/timeFin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="4dp"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:text="2020-04-06 15:26"
+                app:layout_constraintStart_toEndOf="@+id/hourFin"
+                app:layout_constraintTop_toBottomOf="@+id/timeIni" />
+
+
+            <EditText
+                android:id="@+id/inputIdRuta"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="85dp"
+                android:layout_marginEnd="194dp"
+                android:ems="10"
+                android:visibility="gone"
+                android:inputType="text"
+                android:text="IdRegistro"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/inputTokenPersona"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="85dp"
+                android:layout_marginEnd="194dp"
+                android:ems="10"
+                android:visibility="gone"
+                android:inputType="text"
+                android:text="Token"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/blue_rounded_route"
+                android:text="Iniciar"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

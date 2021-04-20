@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:padding="5dp">
 
     <LinearLayout
+        android:id="@+id/LayoutGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -22,18 +24,29 @@
             android:orientation="vertical"
             android:layout_marginLeft="16dp">
 
+
+            <EditText
+                android:id="@+id/idGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:visibility="gone"
+                android:inputType="text"
+                android:text="@string/name"
+                android:importantForAutofill="no" />
+
             <TextView
                 android:id="@+id/group_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="Group Name"/>
+                android:text="@string/group_name"/>
 
             <TextView
                 android:id="@+id/description_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description Group"/>
+                android:text="@string/description_group"/>
         </LinearLayout>
         
         <LinearLayout
@@ -45,7 +58,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_placeholder"/>
+                android:src="@drawable/ic_arrow_drop_down"/>
 
         </LinearLayout>
 

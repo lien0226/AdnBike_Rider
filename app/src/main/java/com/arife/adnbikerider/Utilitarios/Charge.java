@@ -3,6 +3,8 @@ package com.arife.adnbikerider.Utilitarios;
 import com.arife.adnbikerider.AppData.Sesion;
 import com.arife.adnbikerider.mvc.m.GroupModel;
 import com.arife.adnbikerider.mvc.m.LoginModel;
+import com.arife.adnbikerider.mvc.m.RouteModel;
+import com.arife.adnbikerider.mvc.m.UnionModel;
 import com.arife.adnbikerider.mvc.m.UserModel;
 
 import java.util.HashMap;
@@ -84,5 +86,38 @@ public class Charge {
         String url =  Link_Base+aurl+"?usuario="+this.sesion.readSesion().getUsername();
         return url;
     }
+
+    public Map genRoute(RouteModel routeModel){
+        this.sesion = Sesion.getInstance();
+        Map<String, Object> map = new HashMap<>();
+        map.put("opcion",routeModel.getOpcion());
+        map.put("id",String.valueOf(routeModel.getId()));
+        map.put("idgrupo",String.valueOf(routeModel.getIdGrupo()));
+        map.put("nomruta",routeModel.getNameRuta());
+        map.put("desruta",routeModel.getDescRuta());
+        map.put("usuario",this.sesion.readSesion().getUsername());
+
+        return map;
+    }
+
+    public String genGetRoute(GroupModel groupModel){
+        String aurl="get_routesgroup";
+        this.sesion = Sesion.getInstance();
+
+        String url =  Link_Base+aurl+"?idgrupo="+groupModel.getId()+"&usuario="+this.sesion.readSesion().getUsername();
+        return url;
+    }
+
+    public Map genUnion(UnionModel unionModel){
+        this.sesion = Sesion.getInstance();
+        Map<String, Object> map = new HashMap<>();
+        map.put("opcion",unionModel.getOpcion());
+        map.put("id",String.valueOf(unionModel.getId()));
+        map.put("idruta",String.valueOf(unionModel.getIdRuta()));
+        map.put("usuario",this.sesion.readSesion().getUsername());
+
+        return map;
+    }
+
 
 }

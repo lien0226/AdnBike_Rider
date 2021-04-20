@@ -84,6 +84,7 @@ public class Register extends AppCompatActivity implements UserView,View.OnClick
         this.usuarioModel.setOpcion("V");
         this.usuarioModel.setId(userModel.getId());
         this.usuarioModel.setVerificacion(userModel.getVerificacion());
+
         Bundle bundle = new Bundle();
         bundle.putSerializable("UserModel", this.usuarioModel);
         startActivity(new Intent(this, Verify.class).putExtras(bundle));
