@@ -61,6 +61,19 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
         holder.NameRoute.setText(routeModel.getNameRuta());
         holder.DescRoute.setText(routeModel.getDescRuta());
         holder.Button.setText(routeModel.getEstado());
+
+        //but aca modificare para que de acuerdo a si dice INICIAR o UNIRME haga algun proceso diferente.
+        //cuando haces ese refresh no validara aqui ya eso creo no? o si?
+        //cada que los datos ingresen al adaptador se hara esta comparacion
+        //yes para saber si se unira o si iniciara la ruta
+        //if(routeModel.getEstado()=="INICIAR"){
+        //
+        //a NO SI NORMAL CREO ACA EN INICIAR CORRERIA EL HILO Y MOSTRARIA EL MAPA
+        //
+        // }else if(routeModel.getEstado()=="UNIRME"){
+        // ACA IRIA LO DE ABAJO :v
+        // }
+
         holder.Button.setOnClickListener(view ->{
             Log.e("click","click");
             AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
@@ -79,7 +92,9 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
                         @Override
                         public void OnSuccesUnion(String msg) {
                             Toasty.success(context, "unido");
-                            holder.Button.setText("Iniciar");
+                            routeModel.setEstado("INICIAR");//con esta linea que le puse aqui ya el modelo tiene este estado
+                            ListRouteAdapter.this.notifyDataSetChanged(); // con ese refresca la lista completa
+                            ListRouteAdapter.this.notifyItemChanged(position);
                         }
 
                         @Override
