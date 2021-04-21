@@ -16,6 +16,7 @@ import android.view.View;
 import com.arife.adnbikerider.AppData.Adapters.ListGroupAdapter;
 import com.arife.adnbikerider.AppData.Adapters.ListRouteAdapter;
 import com.arife.adnbikerider.AppData.Fragments.FragmentGroups;
+import com.arife.adnbikerider.AppData.Fragments.PendingMove;
 import com.arife.adnbikerider.R;
 import com.arife.adnbikerider.Utilitarios.Charge;
 import com.arife.adnbikerider.mvc.m.GroupModel;
@@ -29,7 +30,7 @@ import com.github.clans.fab.FloatingActionButton;
 
 import java.util.List;
 
-public class GroupRoutes extends AppCompatActivity implements View.OnClickListener, GetRouteView {
+public class GroupRoutes extends AppCompatActivity implements View.OnClickListener, GetRouteView , PendingMove {
 
     private static GroupModel groupModel;
     private FloatingActionButton create_route;
@@ -102,7 +103,7 @@ public class GroupRoutes extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void OnGetRoute(List<RouteModel> listRoute) {
-        this.listRouteAdapter = new ListRouteAdapter(listRoute, this);
+        this.listRouteAdapter = new ListRouteAdapter(listRoute, this , this);
         this.routeRecycler.setAdapter(listRouteAdapter);
         this.routeRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -118,5 +119,10 @@ public class GroupRoutes extends AppCompatActivity implements View.OnClickListen
         restModel.setContext(this);
         restModel.setLink(Charge.getInstance().genGetRoute(groupModel));
         return restModel;
+    }
+
+    @Override
+    public void PendingMoveAction() {
+        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
     }
 }

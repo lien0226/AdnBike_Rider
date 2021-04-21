@@ -6,4 +6,5 @@
     <string name="description_group">Description Group</string>
     <string name="group_name">Group Name</string>
     <string name="name">Name</string>
+    <string name="title_activity_route_map">Map</string>
 </resources>

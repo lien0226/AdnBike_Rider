@@ -1,8 +1,11 @@
 package com.arife.adnbikerider.AppData.Adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +28,10 @@ import com.arife.adnbikerider.mvp.m.interfaz.UnionRoute.UnionRouteInteractor;
 import com.arife.adnbikerider.mvp.m.interfaz.UnionRoute.UnionRoutePresenter;
 import com.arife.adnbikerider.mvp.m.interfaz.UnionRoute.UnionRouteView;
 import com.arife.adnbikerider.mvp.p.Route.UnionRoutePresenterImpl;
+import com.arife.adnbikerider.mvp.v.GroupRoutes;
 import com.arife.adnbikerider.mvp.v.MainActivity;
+import com.arife.adnbikerider.mvp.v.RouteMap;
+import com.arife.adnbikerider.mvp.v.Verify;
 
 import java.util.List;
 
@@ -40,10 +46,12 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
     private UnionRoutePresenter unionRoutePresenter;
     private UnionRouteView unionRouteView;
     private UnionModel unionModel;
+    private GroupRoutes activity;
 
-    public ListRouteAdapter(List<RouteModel> listRoute, Context context) {
+    public ListRouteAdapter(List<RouteModel> listRoute, Context context, GroupRoutes activity) {
         this.listRoute = listRoute;
         this.context = context;
+        this.activity = activity;
     }
 
     @NonNull
@@ -62,66 +70,70 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
         holder.DescRoute.setText(routeModel.getDescRuta());
         holder.Button.setText(routeModel.getEstado());
 
-        //but aca modificare para que de acuerdo a si dice INICIAR o UNIRME haga algun proceso diferente.
-        //cuando haces ese refresh no validara aqui ya eso creo no? o si?
-        //cada que los datos ingresen al adaptador se hara esta comparacion
-        //yes para saber si se unira o si iniciara la ruta
-        //if(routeModel.getEstado()=="INICIAR"){
-        //
-        //a NO SI NORMAL CREO ACA EN INICIAR CORRERIA EL HILO Y MOSTRARIA EL MAPA
-        //
-        // }else if(routeModel.getEstado()=="UNIRME"){
-        // ACA IRIA LO DE ABAJO :v
-        // }
+        //Context context = holder.itemView.getContext();
+        if(routeModel.getEstado().equals("INICIAR")){
 
-        holder.Button.setOnClickListener(view ->{
-            Log.e("click","click");
-            AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-            builder.setMessage("¿Quieres unirte a esta ruta?").setTitle("Alerta");
-            builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Toasty.success(context, "Has seleccionado si", Toasty.LENGTH_SHORT).show();
+            holder.Button.setOnClickListener(view -> {
 
-                    unionModel = new UnionModel();
-                    unionModel.setOpcion("N");
-                    unionModel.setId(0);
-                    unionModel.setIdRuta(routeModel.getId());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("RouteModel", routeModel);
+                context.startActivity(new Intent(context, RouteMap.class).putExtras(bundle));
+                this.activity.PendingMoveAction();
 
-                    unionRouteView = new UnionRouteView() {
-                        @Override
-                        public void OnSuccesUnion(String msg) {
-                            Toasty.success(context, "unido");
-                            routeModel.setEstado("INICIAR");//con esta linea que le puse aqui ya el modelo tiene este estado
-                            ListRouteAdapter.this.notifyDataSetChanged(); // con ese refresca la lista completa
-                            ListRouteAdapter.this.notifyItemChanged(position);
-                        }
-
-                        @Override
-                        public void OnErrorUnion(String error) {
-                            Toasty.success(context, error);
-                        }
-                    };
-
-                    unionRoutePresenter = new UnionRoutePresenterImpl(unionRouteView, new UnionRouteInteractorImpl());
-                    unionRoutePresenter.OnRegisterUnion(ChargueData("Reg_Union_Group"));
-                }
             });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Toasty.success(context, "Has seleccionado no", Toasty.LENGTH_SHORT).show();
-                }
+
+        }else if(routeModel.getEstado().equals("UNIRME")){
+            holder.Button.setOnClickListener(view ->{
+                Log.e("click","click");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+                builder.setMessage("¿Quieres unirte a esta ruta?").setTitle("Alerta");
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toasty.success(context, "Has seleccionado si", Toasty.LENGTH_SHORT).show();
+
+                        unionModel = new UnionModel();
+                        unionModel.setOpcion("N");
+                        unionModel.setId(0);
+                        unionModel.setIdRuta(routeModel.getId());
+
+                        unionRouteView = new UnionRouteView() {
+                            @Override
+                            public void OnSuccesUnion(String msg) {
+                                Toasty.success(context, "unido");
+                                routeModel.setEstado("INICIAR");//con esta linea que le puse aqui ya el modelo tiene este estado
+                                ListRouteAdapter.this.notifyDataSetChanged(); // con ese refresca la lista completa
+                                ListRouteAdapter.this.notifyItemChanged(position);
+                            }
+
+                            @Override
+                            public void OnErrorUnion(String error) {
+                                Toasty.success(context, error);
+                            }
+                        };
+
+                        unionRoutePresenter = new UnionRoutePresenterImpl(unionRouteView, new UnionRouteInteractorImpl());
+                        unionRoutePresenter.OnRegisterUnion(ChargueData("Reg_Union_Group"));
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toasty.success(context, "Has seleccionado no", Toasty.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             });
-            builder.setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        });
+        }
+
+
     }
 
     public RestModel ChargueData(String command){
