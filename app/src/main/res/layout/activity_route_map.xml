@@ -18,6 +18,135 @@
         map:layout_constraintTop_toTopOf="parent"
         tools:context=".mvp.v.RouteMap" />
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_border_rounded_cornwe"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Chronometer
+                android:id="@+id/IdChronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                map:autoSizeTextType="uniform"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/TimeRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00:00"
+                android:textSize="20sp"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                map:autoSizeTextType="uniform" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:layout_gravity="center"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/DistanceRecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0"
+                        android:textSize="20sp"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        map:autoSizeTextType="uniform" />
+
+                    <TextView
+                        android:id="@+id/DistanceFormat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Km"
+                        android:textSize="20sp"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        map:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:layout_weight="30">
+
+                    <ImageButton
+                        android:id="@+id/btnRecord"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_play"
+                        android:background="@drawable/ic_play_btn"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:layout_weight="30">
+
+                    <TextView
+                        android:id="@+id/VelRecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0"
+                        android:textSize="20sp"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        map:autoSizeTextType="uniform" />
+
+                    <TextView
+                        android:id="@+id/VelFormat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Km/h"
+                        android:textSize="20sp"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        map:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floating_group"
         app:menu_fab_label=""

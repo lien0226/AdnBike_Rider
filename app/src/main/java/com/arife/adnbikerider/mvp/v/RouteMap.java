@@ -11,16 +11,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Chronometer;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.arife.adnbikerider.R;
 import com.arife.adnbikerider.Utilitarios.Gps.UtilsGps;
 import com.arife.adnbikerider.Utilitarios.SqlLite.ConnectionSqlLite;
 import com.arife.adnbikerider.Utilitarios.SqlLite.Constantes;
 import com.arife.adnbikerider.mvc.m.RouteModel;
-import com.arife.adnbikerider.mvc.m.UserModel;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,11 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -45,12 +43,22 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
     private ConnectionSqlLite connectionSqlLite;
     private RouteModel routeModel;
     private FloatingActionButton InitRoute;
+    private TextView DistanceRecord, DistanceFormat, VelRecord, VelFormat;
+    private Chronometer chronometer;
+    private ImageButton imageButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_map);
         this.InitRoute = findViewById(R.id.InitRoute);
+        this.DistanceRecord = findViewById(R.id.DistanceRecord);
+        this.DistanceFormat = findViewById(R.id.DistanceFormat);
+        this.VelRecord = findViewById(R.id.VelRecord);
+        this.VelFormat = findViewById(R.id.VelFormat);
+        this.imageButton = findViewById(R.id.btnRecord);
+        this.chronometer = findViewById(R.id.IdChronometer);
         this.InitRoute.setOnClickListener(this);
+        this.imageButton.setOnClickListener(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -105,10 +113,12 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
 
 
     private List<LatLng> pointsL;
-    private List<LatLng> distance;
+    //private List<LatLng> distance;
+    private List<Long> datetime;
     private void InitRoute(){
         pointsL = new ArrayList<>();
-        distance = new ArrayList<>();
+       // distance = new ArrayList<>();
+        datetime = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -125,7 +135,8 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
                                 if (location!=null){
 
                                     RouteMap.this.pointsL.add(new LatLng(location.getLatitude(),location.getLongitude()));
-                                    RouteMap.this.distance.add(new LatLng(location.getLatitude(), location.getLongitude()));
+                                    //RouteMap.this.distance.add(new LatLng(location.getLatitude(), location.getLongitude()));
+                                    RouteMap.this.datetime.add(UtilsGps.DateToMillisecons());
 
                                     ContentValues values = new ContentValues();
                                     values.put(Constantes.CAMPO_ID,0);
@@ -139,18 +150,13 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
                                    // Toast.makeText(RouteMap.this, "Id "+a+" | "+mMap.getMyLocation().distanceTo(location), Toast.LENGTH_SHORT).show();
 
                                     if (RouteMap.this.pointsL.size()>1){
-                                        RouteMap.this.paintPoints(RouteMap.this.pointsL);
+                                        RouteMap.this.paintPoints(RouteMap.this.pointsL, RouteMap.this.datetime);
+
                                     }
 
                                     db = RouteMap.this.connectionSqlLite.getReadableDatabase();
 
                                     Cursor cursor = db.rawQuery("SELECT * FROM "+Constantes.TABLE_POINTS,null);
-                                    //eso no puedes hacer ctm :V
-                                    //gg renuncio but ta sumando :v
-                                    //si pe tiene que sumar la distancia entre los dos utimos puntos
-                                    //pa que o que
-                                    //para poder saber la  distancia entre todos llos puntos
-                                    // hay n puntos por eso debe sumar el punto 1 mas el punto 2 , luego el punto 2 y el punto 3 y asi hasta el punto n
                                     while (cursor.moveToNext()){
                                        // Log.e("Cursor " ,cursor.getInt(1) +" | "+ cursor.getDouble(2)+" - "+ cursor.getDouble(3)+" | "+ UtilsGps.DateToMillisecons());
                                     }
@@ -167,20 +173,33 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
     }
 
     float m = 0;
-    private static DecimalFormat df = new DecimalFormat("0.00000");
+    //private static DecimalFormat df = new DecimalFormat("0.00000");
 
-    private void paintPoints(List<LatLng> points){
+    int tiempo;
+    double velocidad;
+
+
+    private void paintPoints(List<LatLng> points, List<Long> time){
         this.mMap.addPolyline(new PolylineOptions().add(points.get(points.size()-2),points.get(points.size()-1))).setColor(Color.BLUE);
         Location a = new Location("dummyprovider");
-        a.setLatitude(Double.parseDouble(df.format((points.get(points.size()-2).latitude))));
-        a.setLongitude(Double.parseDouble(df.format((points.get(points.size()-2).longitude))));
+        a.setLatitude((points.get(points.size()-2).latitude));
+        a.setLongitude((points.get(points.size()-2).longitude));
         Location b = new Location("dummyprovider");
-        b.setLatitude(Double.parseDouble(df.format((points.get(points.size()-1).latitude))));
-        b.setLongitude(Double.parseDouble(df.format((points.get(points.size()-1).longitude))));
+        b.setLatitude((points.get(points.size()-1).latitude));
+        b.setLongitude((points.get(points.size()-1).longitude));
 
-        Log.e("m " ,UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b))));
-        Toasty.success(this, UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b)))).show();
-        //prueba :V
+        tiempo = Integer.parseInt(String.valueOf((time.get(time.size()-1))-(time.get(time.size()-2))));
+        velocidad = (Double.parseDouble(UtilsGps.DistanceMyVehicle(a.distanceTo(b)).split(" ")[2])/(tiempo));
+
+        //Log.e("m " ,UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b))));
+        //Log.e("time: ", tiempo+" | vel: "+velocidad+" | dist: "+(UtilsGps.DistanceMyVehicle(a.distanceTo(b)).split(" ")[2]));
+        //Toasty.success(this, UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b)))).show();
+
+        this.DistanceRecord.setText(UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b))).split(" ")[2]);
+        this.DistanceFormat.setText(UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b))).split(" ")[3]);
+        this.VelRecord.setText(String.valueOf(velocidad));
+        this.VelFormat.setText("Km/h");
+
     }
 
 
@@ -200,9 +219,15 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.InitRoute :
+            case R.id.btnRecord :
                 this.InitRoute();
+                this.startChronometer();
                 break;
         }
+    }
+
+    private void startChronometer(){
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.start();
     }
 }
