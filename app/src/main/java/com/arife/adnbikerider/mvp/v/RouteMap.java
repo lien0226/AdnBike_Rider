@@ -45,7 +45,9 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
     private FloatingActionButton InitRoute;
     private TextView DistanceRecord, DistanceFormat, VelRecord, VelFormat;
     private Chronometer chronometer;
-    private ImageButton imageButton;
+    private ImageButton imageButton, btnStop;
+    private long pauseOffset;
+    private boolean playStop = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +59,10 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
         this.VelFormat = findViewById(R.id.VelFormat);
         this.imageButton = findViewById(R.id.btnRecord);
         this.chronometer = findViewById(R.id.IdChronometer);
+        this.btnStop = findViewById(R.id.btnStop);
         this.InitRoute.setOnClickListener(this);
         this.imageButton.setOnClickListener(this);
+        this.btnStop.setOnClickListener(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -112,64 +116,67 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
     }
 
 
-    private List<LatLng> pointsL;
-    //private List<LatLng> distance;
-    private List<Long> datetime;
+    private List<LatLng> pointsL = new ArrayList<>();
+    private List<Long> datetime = new ArrayList<>();
+    private Thread thread;
+
     private void InitRoute(){
-        pointsL = new ArrayList<>();
-       // distance = new ArrayList<>();
-        datetime = new ArrayList<>();
-        new Thread(new Runnable() {
+
+        thread =  new Thread(new Runnable() {
             @Override
             public void run() {
 
                 while (true){
                     try {
-                        Thread.sleep(5000);
+                         Thread.sleep(5000);
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                        if (RouteMap.this.playStop){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                Location location = mMap.getMyLocation();
-                                if (location!=null){
+                                    Location location = mMap.getMyLocation();
+                                    if (location!=null){
 
-                                    RouteMap.this.pointsL.add(new LatLng(location.getLatitude(),location.getLongitude()));
-                                    //RouteMap.this.distance.add(new LatLng(location.getLatitude(), location.getLongitude()));
-                                    RouteMap.this.datetime.add(UtilsGps.DateToMillisecons());
+                                        RouteMap.this.pointsL.add(new LatLng(location.getLatitude(),location.getLongitude()));
+                                        //RouteMap.this.distance.add(new LatLng(location.getLatitude(), location.getLongitude()));
+                                        RouteMap.this.datetime.add(UtilsGps.DateToMillisecons());
 
-                                    ContentValues values = new ContentValues();
-                                    values.put(Constantes.CAMPO_ID,0);
-                                    values.put(Constantes.CAMPO_ID_RUTA,routeModel.getId());
-                                    values.put(Constantes.CAMPO_LONGITUD, location.getLongitude());
-                                    values.put(Constantes.CAMPO_LATITUD,location.getLatitude());
-                                    SQLiteDatabase db = RouteMap.this.connectionSqlLite.getWritableDatabase();
-                                    Long a = db.insert(Constantes.TABLE_POINTS,Constantes.CAMPO_ID,values);
-                                    RouteMap.this.connectionSqlLite.close();
+                                        ContentValues values = new ContentValues();
+                                        values.put(Constantes.CAMPO_ID,0);
+                                        values.put(Constantes.CAMPO_ID_RUTA,routeModel.getId());
+                                        values.put(Constantes.CAMPO_LONGITUD, location.getLongitude());
+                                        values.put(Constantes.CAMPO_LATITUD,location.getLatitude());
+                                        SQLiteDatabase db = RouteMap.this.connectionSqlLite.getWritableDatabase();
+                                        Long a = db.insert(Constantes.TABLE_POINTS,Constantes.CAMPO_ID,values);
+                                        RouteMap.this.connectionSqlLite.close();
 
-                                   // Toast.makeText(RouteMap.this, "Id "+a+" | "+mMap.getMyLocation().distanceTo(location), Toast.LENGTH_SHORT).show();
+                                        // Toast.makeText(RouteMap.this, "Id "+a+" | "+mMap.getMyLocation().distanceTo(location), Toast.LENGTH_SHORT).show();
 
-                                    if (RouteMap.this.pointsL.size()>1){
-                                        RouteMap.this.paintPoints(RouteMap.this.pointsL, RouteMap.this.datetime);
+                                        if (RouteMap.this.pointsL.size()>1){
+                                            RouteMap.this.paintPoints(RouteMap.this.pointsL, RouteMap.this.datetime);
+                                        }
 
-                                    }
+                                        //db = RouteMap.this.connectionSqlLite.getReadableDatabase();
 
-                                    db = RouteMap.this.connectionSqlLite.getReadableDatabase();
-
-                                    Cursor cursor = db.rawQuery("SELECT * FROM "+Constantes.TABLE_POINTS,null);
-                                    while (cursor.moveToNext()){
-                                       // Log.e("Cursor " ,cursor.getInt(1) +" | "+ cursor.getDouble(2)+" - "+ cursor.getDouble(3)+" | "+ UtilsGps.DateToMillisecons());
+                                       /* Cursor cursor = db.rawQuery("SELECT * FROM "+Constantes.TABLE_POINTS,null);
+                                        while (cursor.moveToNext()){
+                                            // Log.e("Cursor " ,cursor.getInt(1) +" | "+ cursor.getDouble(2)+" - "+ cursor.getDouble(3)+" | "+ UtilsGps.DateToMillisecons());
+                                        }*/
                                     }
                                 }
-                            }
-                        });
+                            });
+                        }
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
-        }).start();
+        });
+
+       thread.start();
+
     }
 
     float m = 0;
@@ -177,7 +184,7 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
 
     int tiempo;
     double velocidad;
-
+    int distancia;
 
     private void paintPoints(List<LatLng> points, List<Long> time){
         this.mMap.addPolyline(new PolylineOptions().add(points.get(points.size()-2),points.get(points.size()-1))).setColor(Color.BLUE);
@@ -188,46 +195,56 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
         b.setLatitude((points.get(points.size()-1).latitude));
         b.setLongitude((points.get(points.size()-1).longitude));
 
-        tiempo = Integer.parseInt(String.valueOf((time.get(time.size()-1))-(time.get(time.size()-2))));
-        velocidad = (Double.parseDouble(UtilsGps.DistanceMyVehicle(a.distanceTo(b)).split(" ")[2])/(tiempo));
+        m += a.distanceTo(b);
 
+        tiempo = Integer.parseInt(String.valueOf((time.get(time.size()-1))-(time.get(time.size()-2))));
+        if (tiempo!=0){
+            velocidad = (Double.parseDouble(UtilsGps.DistanceMyVehicle(a.distanceTo(b)).split(" ")[2])/(tiempo));
+        }
         //Log.e("m " ,UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b))));
         //Log.e("time: ", tiempo+" | vel: "+velocidad+" | dist: "+(UtilsGps.DistanceMyVehicle(a.distanceTo(b)).split(" ")[2]));
         //Toasty.success(this, UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b)))).show();
+        Log.e("velocidad: ",velocidad+"| tiempo: "+tiempo+" |recorrido"+m);
 
-        this.DistanceRecord.setText(UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b))).split(" ")[2]);
-        this.DistanceFormat.setText(UtilsGps.DistanceMyVehicle(( m += a.distanceTo(b))).split(" ")[3]);
+        this.DistanceRecord.setText(UtilsGps.DistanceMyVehicle(m).split(" ")[2]);
+        this.DistanceFormat.setText(UtilsGps.DistanceMyVehicle(m).split(" ")[3]);
         this.VelRecord.setText(String.valueOf(velocidad));
         this.VelFormat.setText("Km/h");
 
-    }
-
-
-    private float lasPosition(List<LatLng> distance){
-        Location locationA = new Location("Punta A");
-        locationA.setLatitude(distance.get(distance.size()-2).latitude);
-        locationA.setLongitude(distance.get(distance.size()-2).longitude);
-        Location locationB = new Location("Punto B");
-        locationB.setLatitude(distance.get(distance.size()-1).latitude);
-        locationB.setLongitude(distance.get(distance.size()-1).longitude);
-        // = locationA.distanceTo(locationB);
-        float distanc = mMap.getMyLocation().distanceTo(locationA);
-        return distanc;
-        //Log.e("ditancia: ",String.valueOf(distanc));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRecord :
-                this.InitRoute();
-                this.startChronometer();
+                if (!playStop){
+                    this.InitRoute();
+                    this.startChronometer();
+                    this.playStop = true;
+                }else{
+                    this.pauseChronometer();
+                    this.playStop = false;
+                }
+                break;
+            case R.id.btnStop :
+                this.resetChronometer();
                 break;
         }
     }
 
     private void startChronometer(){
-        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
         chronometer.start();
+        imageButton.setImageResource(R.drawable.ic_pause);
+    }
+    private void pauseChronometer(){
+        chronometer.stop();
+        pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
+        imageButton.setImageResource(R.drawable.ic_play);
+    }
+
+    private void resetChronometer(){
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffset=0;
     }
 }

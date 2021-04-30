@@ -16,8 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 public class UtilsGps {
 
-    //tonces la distancia lo mando aqui? esa distancia sumada?
-    //yes cada que se suma, aca lo unico  que hace es mostrarte en km o mtros
     public static String DistanceMyVehicle(float distance){
 
         String val = "Distancia recorrida ";

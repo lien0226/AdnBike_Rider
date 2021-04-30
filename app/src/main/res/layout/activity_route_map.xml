@@ -7,18 +7,8 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toTopOf="parent"
-        tools:context=".mvp.v.RouteMap" />
-
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/blue_border_rounded_cornwe"
@@ -93,6 +83,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
@@ -103,8 +94,17 @@
                         android:id="@+id/btnRecord"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:layout_margin="5dp"
                         android:src="@drawable/ic_play"
                         android:background="@drawable/ic_play_btn"/>
+
+                    <ImageButton
+                        android:id="@+id/btnStop"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_stop"
+                        android:background="@drawable/ic_stop_btn"/>
 
                 </LinearLayout>
 
@@ -146,6 +146,19 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/cardRecord"
+        tools:context=".mvp.v.RouteMap" />
+
+
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floating_group"
