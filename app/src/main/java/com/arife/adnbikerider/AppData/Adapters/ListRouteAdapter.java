@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +23,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.arife.adnbikerider.R;
 import com.arife.adnbikerider.Utilitarios.Charge;
+import com.arife.adnbikerider.Utilitarios.SqlLite.ConnectionSqlLite;
+import com.arife.adnbikerider.Utilitarios.SqlLite.Constantes;
 import com.arife.adnbikerider.mvc.m.RestModel;
 import com.arife.adnbikerider.mvc.m.RouteModel;
 import com.arife.adnbikerider.mvc.m.UnionModel;
@@ -47,6 +52,7 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
     private UnionRouteView unionRouteView;
     private UnionModel unionModel;
     private GroupRoutes activity;
+    private ConnectionSqlLite connectionSqlLite;
 
     public ListRouteAdapter(List<RouteModel> listRoute, Context context, GroupRoutes activity) {
         this.listRoute = listRoute;
@@ -65,8 +71,26 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final RouteModel routeModel = this.listRoute.get(position);
+        this.connectionSqlLite = new ConnectionSqlLite(context, "DB_ADNRIDE", null, 1);
+        SQLiteDatabase db = this.connectionSqlLite.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ Constantes.TABLE_POINTS + " WHERE "+Constantes.CAMPO_ID_RUTA +"="+routeModel.getId() ,null);
+        /*while (cursor.moveToNext()){
+            Log.e("Cursor " ,cursor.getInt(1) +" | "+ cursor.getDouble(2)+" - "+ cursor.getDouble(3));
+        }*/
+
+        if (cursor.moveToNext()){
+            Log.e("data", cursor.getInt(1)+"");
+            holder.ImgBtnUp.setVisibility(View.VISIBLE);
+            holder.ImgBtnUp.setOnClickListener(view ->{
+                Log.e("Up", "Subir ruta "+cursor.getInt(1));
+            });
+            holder.Button.setVisibility(View.GONE);
+        }else{
+            holder.ImgBtnUp.setVisibility(View.GONE);
+            holder.Button.setVisibility(View.VISIBLE);
+        }
         holder.IdRuta.setText(String.valueOf(routeModel.getId()));
-        holder.NameRoute.setText(routeModel.getNameRuta());
+        holder.NameRoute.setText(routeModel.getNameRuta())  ;
         holder.DescRoute.setText(routeModel.getDescRuta());
         holder.Button.setText(routeModel.getEstado());
 
@@ -84,7 +108,6 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
 
         }else if(routeModel.getEstado().equals("UNIRME")){
             holder.Button.setOnClickListener(view ->{
-                Log.e("click","click");
                 AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
                 builder.setMessage("¿Quieres unirte a esta ruta?").setTitle("Alerta");
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
@@ -101,8 +124,8 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
                             @Override
                             public void OnSuccesUnion(String msg) {
                                 Toasty.success(context, "unido");
-                                routeModel.setEstado("INICIAR");//con esta linea que le puse aqui ya el modelo tiene este estado
-                                ListRouteAdapter.this.notifyDataSetChanged(); // con ese refresca la lista completa
+                                routeModel.setEstado("INICIAR");
+                                ListRouteAdapter.this.notifyDataSetChanged();
                                 ListRouteAdapter.this.notifyItemChanged(position);
                             }
 
@@ -154,6 +177,7 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
         private EditText IdRuta;
         private TextView NameRoute, DescRoute;
         private Button Button;
+        private ImageButton ImgBtnUp;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -161,6 +185,7 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
             NameRoute = itemView.findViewById(R.id.nameRoute);
             DescRoute = itemView.findViewById(R.id.descRoute);
             Button = itemView.findViewById(R.id.button);
+            ImgBtnUp = itemView.findViewById(R.id.imgBtnUp);
         }
     }
 }

@@ -8,6 +8,7 @@ public class Constantes {
     public static final String CAMPO_ID_RUTA ="IDRUTA";
     public static final String CAMPO_LONGITUD = "LONGITUD";
     public static final String CAMPO_LATITUD = "LATITUD";
-    public static final String CREATE_TABLE = "CREATE TABLE "+TABLE_POINTS+" ("+ CAMPO_ID+" INTEGER,"+CAMPO_ID_RUTA+" INTEGER,"+CAMPO_LONGITUD+" DOUBLE,"+CAMPO_LATITUD+" DOUBLE)";
+    public static final String TIMESECOND = "TIME";
+    public static final String CREATE_TABLE = "CREATE TABLE "+TABLE_POINTS+" ("+ CAMPO_ID+" INTEGER,"+CAMPO_ID_RUTA+" INTEGER,"+CAMPO_LONGITUD+" DOUBLE,"+CAMPO_LATITUD+" DOUBLE,"+TIMESECOND+" TEXT)";
 
 }

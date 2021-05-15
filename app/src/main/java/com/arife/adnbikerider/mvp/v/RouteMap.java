@@ -147,6 +147,7 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
                                         values.put(Constantes.CAMPO_ID_RUTA,routeModel.getId());
                                         values.put(Constantes.CAMPO_LONGITUD, location.getLongitude());
                                         values.put(Constantes.CAMPO_LATITUD,location.getLatitude());
+                                        values.put(Constantes.TIMESECOND,UtilsGps.DateToMillisecons());
                                         SQLiteDatabase db = RouteMap.this.connectionSqlLite.getWritableDatabase();
                                         Long a = db.insert(Constantes.TABLE_POINTS,Constantes.CAMPO_ID,values);
                                         RouteMap.this.connectionSqlLite.close();
