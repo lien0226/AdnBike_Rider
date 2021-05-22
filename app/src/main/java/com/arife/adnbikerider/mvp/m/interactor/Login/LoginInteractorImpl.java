@@ -41,7 +41,7 @@ public class LoginInteractorImpl implements LoginInteractor, ServerRestResponse 
                     LoginModel loginModel = new LoginModel();
                     loginModel.setUsername(jsonArray.getString("login"));
                     loginModel.setResponse(jsonArray.getInt("error"));
-
+                    loginModel.setName(jsonArray.getString("name"));
                     this.onFinishLogin.onSuccess(loginModel);
                 }else{
                     this.onFinishLogin.onError(jsonArray.getString("mensaje"));

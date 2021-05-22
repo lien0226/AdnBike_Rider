@@ -4,6 +4,7 @@ public class LoginModel {
 
     private String username;
     private String password;
+    private String Name;
     private int response;
 
     public String getUsername() {
@@ -28,5 +29,13 @@ public class LoginModel {
 
     public void setResponse(int response) {
         this.response = response;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 }

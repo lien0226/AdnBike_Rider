@@ -153,17 +153,16 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
                                         RouteMap.this.connectionSqlLite.close();
 
                                         // Toast.makeText(RouteMap.this, "Id "+a+" | "+mMap.getMyLocation().distanceTo(location), Toast.LENGTH_SHORT).show();
-
                                         if (RouteMap.this.pointsL.size()>1){
                                             RouteMap.this.paintPoints(RouteMap.this.pointsL, RouteMap.this.datetime);
                                         }
 
-                                        //db = RouteMap.this.connectionSqlLite.getReadableDatabase();
+                                        db = RouteMap.this.connectionSqlLite.getReadableDatabase();
 
-                                       /* Cursor cursor = db.rawQuery("SELECT * FROM "+Constantes.TABLE_POINTS,null);
+                                       Cursor cursor = db.rawQuery("SELECT * FROM "+Constantes.TABLE_POINTS,null);
                                         while (cursor.moveToNext()){
-                                            // Log.e("Cursor " ,cursor.getInt(1) +" | "+ cursor.getDouble(2)+" - "+ cursor.getDouble(3)+" | "+ UtilsGps.DateToMillisecons());
-                                        }*/
+                                            Log.e("Cursor " ,cursor.getInt(1) +" | "+ cursor.getDouble(2)+" - "+ cursor.getDouble(3)+" | "+ cursor.getString(4));
+                                        }
                                     }
                                 }
                             });

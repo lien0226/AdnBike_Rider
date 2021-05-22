@@ -28,6 +28,7 @@ public class Sesion {
     public void saveSesion(LoginModel loginModel){
         sharedPreferences.edit().putString("Username", loginModel.getUsername().trim()).apply();
         sharedPreferences.edit().putString("Password", loginModel.getPassword().trim()).apply();
+        sharedPreferences.edit().putString("Name", loginModel.getName()).apply();
     }
 
     public LoginModel readSesion(){
@@ -40,6 +41,7 @@ public class Sesion {
             sesion = new LoginModel();
             sesion.setUsername(sharedPreferences.getString("Username",""));
             sesion.setPassword(sharedPreferences.getString("Password",""));
+            sesion.setName(sharedPreferences.getString("Name",""));
             return sesion;
         }
 

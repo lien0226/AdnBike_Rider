@@ -65,7 +65,7 @@ public class FragmentGroups extends Fragment implements ListGroupView,View.OnCli
 
     @Override
     public void OnSuccesListGroup(List<GroupModel> listgroup) {
-        this.listGroupAdapter = new ListGroupAdapter(listgroup, this.getActivity().getApplicationContext(),this.pendingMove );
+        this.listGroupAdapter = new ListGroupAdapter(listgroup, this.getActivity().getApplicationContext(),this.pendingMove, this.getActivity());
         this.groupRecycler.setAdapter(listGroupAdapter);
         this.groupRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity().getApplicationContext()));
     }
@@ -87,4 +87,5 @@ public class FragmentGroups extends Fragment implements ListGroupView,View.OnCli
     public FragmentGroups(PendingMove pendingMove) {
         this.pendingMove = pendingMove;
     }
+
 }

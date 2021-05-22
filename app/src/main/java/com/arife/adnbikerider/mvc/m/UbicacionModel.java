@@ -1,11 +1,29 @@
 package com.arife.adnbikerider.mvc.m;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class UbicacionModel {
     private int IdUbicacion;
     private int IdRuta;
-    private int IdPersona;
-    private int Latitud;
-    private int Longitud;
+    private String latlong;
+    private LatLng ubicacion;
+    private Long Time;
+
+    public Long getTime() {
+        return Time;
+    }
+
+    public void setTime(Long time) {
+        Time = time;
+    }
+
+    public LatLng getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(LatLng ubicacion) {
+        this.ubicacion = ubicacion;
+    }
 
     public int getIdUbicacion() {
         return IdUbicacion;
@@ -23,28 +41,12 @@ public class UbicacionModel {
         IdRuta = idRuta;
     }
 
-    public int getIdPersona() {
-        return IdPersona;
+    public String getLatlong() {
+        return latlong;
     }
 
-    public void setIdPersona(int idPersona) {
-        IdPersona = idPersona;
-    }
-
-    public int getLatitud() {
-        return Latitud;
-    }
-
-    public void setLatitud(int latitud) {
-        Latitud = latitud;
-    }
-
-    public int getLongitud() {
-        return Longitud;
-    }
-
-    public void setLongitud(int longitud) {
-        Longitud = longitud;
+    public void setLatlong(String latlong) {
+        this.latlong = latlong;
     }
 }
 

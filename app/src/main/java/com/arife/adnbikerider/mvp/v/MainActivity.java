@@ -12,6 +12,7 @@ import com.arife.adnbikerider.AppData.Fragments.FragmentGroups;
 import com.arife.adnbikerider.AppData.Fragments.FragmentMyRoutes;
 import com.arife.adnbikerider.AppData.Fragments.FragmentPost;
 import com.arife.adnbikerider.AppData.Fragments.PendingMove;
+import com.arife.adnbikerider.AppData.Sesion;
 import com.arife.adnbikerider.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -29,10 +30,10 @@ public class MainActivity extends AppCompatActivity implements PendingMove {
         this.viewPagerHome = findViewById(R.id.view_pager_home);
         this.pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.bgHeader);
+        Toolbar toolbar = findViewById(R.id.bgHeader);
         setSupportActionBar(toolbar);
         getSupportActionBar().setElevation(0);
-        getSupportActionBar().setTitle("Mi nombre");
+        getSupportActionBar().setTitle(Sesion.getInstance().readSesion().getName());
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

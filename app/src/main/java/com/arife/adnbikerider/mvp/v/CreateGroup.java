@@ -1,11 +1,18 @@
 package com.arife.adnbikerider.mvp.v;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +20,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.arife.adnbikerider.R;
 import com.arife.adnbikerider.Utilitarios.Charge;
+import com.arife.adnbikerider.Utilitarios.Image.ProcessImg;
 import com.arife.adnbikerider.mvc.m.CityModel;
 import com.arife.adnbikerider.mvc.m.GroupModel;
 import com.arife.adnbikerider.mvc.m.RestModel;
@@ -30,7 +39,11 @@ import com.arife.adnbikerider.mvp.m.interfaz.Group.GroupPresenter;
 import com.arife.adnbikerider.mvp.m.interfaz.Group.GroupView;
 import com.arife.adnbikerider.mvp.p.City.CityPresenterImpl;
 import com.arife.adnbikerider.mvp.p.Groups.GroupPresenterImpl;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +63,8 @@ public class CreateGroup extends AppCompatActivity implements CityView, GroupVie
     private RadioGroup tipoGrupo;
     private RadioButton publico;
     private RadioButton privado;
+    private ImageView imgVwGroup;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +84,11 @@ public class CreateGroup extends AppCompatActivity implements CityView, GroupVie
         this.tipoGrupo = findViewById(R.id.rgTipoGrupo);
         this.privado = findViewById(R.id.rbPrivado);
         this.publico = findViewById(R.id.rbPublico);
+        this.imgVwGroup = findViewById(R.id.ImageGroup);
         this.cod = "";
 
         this.btnSaveGroup.setOnClickListener(this);
+        this.imgVwGroup.setOnClickListener(this);
 
         this.groupPresenter = new GroupPresenterImpl(this, new GroupInteractorImpl());
         this.cityPresenter = new CityPresenterImpl(this, new CityInteractorImpl());
@@ -149,9 +166,13 @@ public class CreateGroup extends AppCompatActivity implements CityView, GroupVie
                 this.groupModel.setGroupDescription(this.groupDesc.getText().toString());
                 this.groupModel.setUbigeo(cod);
                 this.groupModel.setCodEstado("001001");
+                this.groupModel.setImage(this.ImgToString(bitmap));
                 this.groupPresenter.onRegisterGroup(this.ChargueData(groupModel));
                 break;
-
+            case R.id.ImageGroup:
+                    this.ChargeImage();
+                    Log.e("click","imageview");
+                break;
         }
     }
 
@@ -173,5 +194,69 @@ public class CreateGroup extends AppCompatActivity implements CityView, GroupVie
         restModel.setParameters(Charge.getInstance().genGroup(groupModel));
         restModel.setLink(Link_Base+"Reg_Group");
         return restModel;
+    }
+
+    private void ChargeImage(){
+        final CharSequence[] options = {"Tomar foto","Abrir galeria","Cancelar"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Elige una opcion");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (options[which].equals("Tomar foto")){
+                    Toasty.success(getApplicationContext(), "tomar foto", Toasty.LENGTH_SHORT).show();
+                }else if(options[which].equals("Abrir galeria")){
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/");
+                    startActivityForResult(intent.createChooser(intent,"Seleccione"),10);
+                }else{
+                    dialog.dismiss();
+                }
+            }
+
+        });
+        builder.show();
+    }
+
+    private ProcessImg processImg;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==10 && resultCode == RESULT_OK) {
+            Uri patch = data.getData();
+            if (patch != null) {
+                processImg = new ProcessImg(this, this,null);
+                processImg.starCrop(patch);
+                //imgVwGroup.setImageURI(patch);
+
+               /*try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), patch);
+                    imgVwGroup.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+            }
+        }else if(requestCode == UCrop.REQUEST_CROP && resultCode==RESULT_OK){
+                Uri imgUriResultCrop = UCrop.getOutput(data);
+                if (imgUriResultCrop!=null){
+                    imgVwGroup.setImageURI(imgUriResultCrop);
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imgUriResultCrop);
+                        imgVwGroup.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+        }
+    }
+
+    private String ImgToString(Bitmap bitmap){
+        ByteArrayOutputStream array = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,array);
+        byte[] imageByte = array.toByteArray();
+        String imageString = Base64.encodeToString(imageByte, Base64.DEFAULT);
+        return imageString;
+
     }
 }

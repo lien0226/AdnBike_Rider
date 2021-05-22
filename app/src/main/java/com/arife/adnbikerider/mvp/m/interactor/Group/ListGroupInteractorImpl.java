@@ -45,6 +45,7 @@ public class ListGroupInteractorImpl implements ListGroupInteractor, ServerRestR
                         groupModel.setId(job.getInt("IdGrupo"));
                         groupModel.setGroupName(job.getString("NombreGrupo"));
                         groupModel.setGroupDescription(job.getString("DescripcionGrupo"));
+                        groupModel.setImage(job.getString("Image"));
                         listGroup.add(groupModel);
                     }
                     this.onFinishListGroup.OnSucces(listGroup);

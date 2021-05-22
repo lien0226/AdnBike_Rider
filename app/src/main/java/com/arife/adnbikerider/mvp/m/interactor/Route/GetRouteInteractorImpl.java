@@ -25,6 +25,7 @@ public class GetRouteInteractorImpl implements GetRouteInteractor, ServerRestRes
         this.onFinishGetRoute = onFinishGetRoute;
         restModel.setRestResponse(this);
         Rest.getInstance().sendGetRequestToServer(restModel);
+        //e
     }
 
     @Override

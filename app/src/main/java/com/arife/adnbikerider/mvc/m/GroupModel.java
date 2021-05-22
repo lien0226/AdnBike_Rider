@@ -1,5 +1,7 @@
 package com.arife.adnbikerider.mvc.m;
 
+import com.arife.adnbikerider.AppData.Adapters.OnImageResponse;
+
 import java.io.Serializable;
 
 public class GroupModel implements Serializable {
@@ -10,6 +12,8 @@ public class GroupModel implements Serializable {
     private String Ubigeo;
     private String tipo;
     private String codEstado;
+    private String Image;
+    private OnImageResponse onImageResponse;
 
     public String getOpcion() {
         return opcion;
@@ -65,5 +69,21 @@ public class GroupModel implements Serializable {
 
     public void setCodEstado(String codEstado) {
         this.codEstado = codEstado;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
+    }
+
+    public OnImageResponse getOnImageResponse() {
+        return onImageResponse;
+    }
+
+    public void setOnImageResponse(OnImageResponse onImageResponse) {
+        this.onImageResponse = onImageResponse;
     }
 }

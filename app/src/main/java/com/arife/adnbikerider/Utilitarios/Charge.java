@@ -4,6 +4,7 @@ import com.arife.adnbikerider.AppData.Sesion;
 import com.arife.adnbikerider.mvc.m.GroupModel;
 import com.arife.adnbikerider.mvc.m.LoginModel;
 import com.arife.adnbikerider.mvc.m.RouteModel;
+import com.arife.adnbikerider.mvc.m.UbicacionModel;
 import com.arife.adnbikerider.mvc.m.UnionModel;
 import com.arife.adnbikerider.mvc.m.UserModel;
 
@@ -14,6 +15,9 @@ public class Charge {
 
     public static String Link_Base = "http://181.224.251.170:9090/AdnRoutes/Routes/";
     public static String Base_get = "http://181.224.251.170:9090/AdnRoutes/Routes";
+    public static String GetRoutePerson = Link_Base+"myroutes";
+    public static String Base_img ="http://181.224.251.170:9090/asset/adnroutes/images/";
+
     private static Charge charge;
     private Sesion sesion;
 
@@ -75,6 +79,7 @@ public class Charge {
         map.put("tgrupo",groupModel.getTipo());
         map.put("codestado",groupModel.getCodEstado());
         map.put("usuario",this.sesion.readSesion().getUsername());
+        map.put("image",groupModel.getImage());
 
         return map;
     }
@@ -84,6 +89,15 @@ public class Charge {
         this.sesion = Sesion.getInstance();
 
         String url =  Link_Base+aurl+"?usuario="+this.sesion.readSesion().getUsername();
+        return url;
+    }
+
+    public String genGetRoutePerson(RouteModel routeModel){
+        String aurl="myroutes";
+        this.sesion = Sesion.getInstance();
+
+        String url =  Link_Base+aurl+"?idruta="+routeModel.getId()+"&usuario="+this.sesion.readSesion().getUsername();
+
         return url;
     }
 
@@ -117,6 +131,26 @@ public class Charge {
         map.put("usuario",this.sesion.readSesion().getUsername());
 
         return map;
+    }
+
+    public Map genUbication(UbicacionModel ubicacionModel){
+        this.sesion = Sesion.getInstance();
+        Map<String, Object> map = new HashMap<>();
+        map.put("opcion","N");
+        map.put("id",String.valueOf(ubicacionModel.getIdUbicacion()));
+        map.put("idruta",String.valueOf(ubicacionModel.getIdRuta()));
+        map.put("latlong", ubicacionModel.getLatlong());
+        map.put("usuario",this.sesion.readSesion().getUsername());
+
+        return map;
+    }
+
+    public String genGetMyRoute(GroupModel groupModel){
+        String aurl="get_routesgroup";
+        this.sesion = Sesion.getInstance();
+
+        String url =  Link_Base+aurl+"?idgrupo="+groupModel.getId()+"&usuario="+this.sesion.readSesion().getUsername();
+        return url;
     }
 
 

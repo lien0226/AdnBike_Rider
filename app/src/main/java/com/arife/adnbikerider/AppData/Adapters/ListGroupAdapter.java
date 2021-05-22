@@ -3,7 +3,9 @@ package com.arife.adnbikerider.AppData.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.arife.adnbikerider.AppData.Fragments.FragmentGroups;
 import com.arife.adnbikerider.AppData.Fragments.PendingMove;
 import com.arife.adnbikerider.R;
+import com.arife.adnbikerider.Utilitarios.Image.ProcessImg;
 import com.arife.adnbikerider.mvc.m.GroupModel;
 import com.arife.adnbikerider.mvp.v.CreateGroup;
 import com.arife.adnbikerider.mvp.v.GroupRoutes;
@@ -28,18 +31,23 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
+import static com.arife.adnbikerider.Utilitarios.Charge.Base_img;
+
 public class ListGroupAdapter extends RecyclerView.Adapter<ListGroupAdapter.MyViewHolder> {
 
     private List<GroupModel> listGroup;
-    //private GroupModel groupModel;
-    //private List<GroupModel> listGroupAll;
     private Context context;
     private PendingMove pendingMove;
+    private Activity activity;
+    private ProcessImg processImg;
 
-    public ListGroupAdapter(List<GroupModel> listGroup, Context context , PendingMove pendingMove) {
+    public ListGroupAdapter(List<GroupModel> listGroup, Context context , PendingMove pendingMove, Activity activity) {
         this.listGroup = listGroup;
         this.context = context;
         this.pendingMove = pendingMove;
+        this.activity = activity;
         //this.listGroupAll = new ArrayList<>(listGroup);
     }
 
@@ -57,11 +65,34 @@ public class ListGroupAdapter extends RecyclerView.Adapter<ListGroupAdapter.MyVi
         holder.groupName.setText(groupModel.getGroupName());
         holder.descriptionGroup.setText(groupModel.getGroupDescription());
         holder.idGroup.setText(String.valueOf(groupModel.getId()));
+
+        if (groupModel.getImage()!=null){
+
+            //Log.e("no null",Base_img+groupModel.getImage());
+            OnImageResponse onImageResponse = new OnImageResponse() {
+                @Override
+                public void OnImage(Bitmap bitmap) {
+                    holder.imageView.setImageBitmap(bitmap);
+                }
+
+                @Override
+                public void OnErrorImage(String error) {
+                    holder.imageView.setImageResource(R.drawable.img_base);
+                }
+            };
+            processImg = new ProcessImg(this.context, this.activity,onImageResponse);
+            processImg.ObtenerImg(Base_img+groupModel.getImage());
+
+
+        }else{
+            holder.imageView.setImageResource(R.drawable.img_base);
+            //Log.e("error img","null");
+        }
         holder.linearLayout.setOnClickListener(view -> {
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("GroupModel", groupModel);
-            holder.linearLayout.getContext().startActivity(new Intent(holder.linearLayout.getContext(), GroupRoutes.class).putExtras(bundle));
+            holder.linearLayout.getContext().startActivity(new Intent(holder.linearLayout.getContext(), GroupRoutes.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtras(bundle));
 
             this.pendingMove.PendingMoveAction();
             //getAoverridePendingTransition(R.anim.slide_in_right, R.anim.stay);

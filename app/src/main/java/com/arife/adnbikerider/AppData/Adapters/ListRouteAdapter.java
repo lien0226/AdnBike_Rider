@@ -27,16 +27,22 @@ import com.arife.adnbikerider.Utilitarios.SqlLite.ConnectionSqlLite;
 import com.arife.adnbikerider.Utilitarios.SqlLite.Constantes;
 import com.arife.adnbikerider.mvc.m.RestModel;
 import com.arife.adnbikerider.mvc.m.RouteModel;
+import com.arife.adnbikerider.mvc.m.UbicacionModel;
 import com.arife.adnbikerider.mvc.m.UnionModel;
 import com.arife.adnbikerider.mvp.m.interactor.Route.UnionRouteInteractorImpl;
+import com.arife.adnbikerider.mvp.m.interactor.Ubicacion.UbicacionInteractorImpl;
+import com.arife.adnbikerider.mvp.m.interfaz.Ubicacion.UbicacionPresenter;
+import com.arife.adnbikerider.mvp.m.interfaz.Ubicacion.UbicacionView;
 import com.arife.adnbikerider.mvp.m.interfaz.UnionRoute.UnionRouteInteractor;
 import com.arife.adnbikerider.mvp.m.interfaz.UnionRoute.UnionRoutePresenter;
 import com.arife.adnbikerider.mvp.m.interfaz.UnionRoute.UnionRouteView;
 import com.arife.adnbikerider.mvp.p.Route.UnionRoutePresenterImpl;
+import com.arife.adnbikerider.mvp.p.Ubicacion.UbicacionPresenterImpl;
 import com.arife.adnbikerider.mvp.v.GroupRoutes;
 import com.arife.adnbikerider.mvp.v.MainActivity;
 import com.arife.adnbikerider.mvp.v.RouteMap;
 import com.arife.adnbikerider.mvp.v.Verify;
+import com.arife.adnbikerider.mvp.v.ViewRecord;
 
 import java.util.List;
 
@@ -53,6 +59,9 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
     private UnionModel unionModel;
     private GroupRoutes activity;
     private ConnectionSqlLite connectionSqlLite;
+    private UbicacionPresenter ubicacionPresenter;
+    private UbicacionView ubicacionView;
+    private UbicacionModel ubicacionModel;
 
     public ListRouteAdapter(List<RouteModel> listRoute, Context context, GroupRoutes activity) {
         this.listRoute = listRoute;
@@ -74,15 +83,40 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
         this.connectionSqlLite = new ConnectionSqlLite(context, "DB_ADNRIDE", null, 1);
         SQLiteDatabase db = this.connectionSqlLite.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM "+ Constantes.TABLE_POINTS + " WHERE "+Constantes.CAMPO_ID_RUTA +"="+routeModel.getId() ,null);
-        /*while (cursor.moveToNext()){
-            Log.e("Cursor " ,cursor.getInt(1) +" | "+ cursor.getDouble(2)+" - "+ cursor.getDouble(3));
-        }*/
 
         if (cursor.moveToNext()){
             Log.e("data", cursor.getInt(1)+"");
             holder.ImgBtnUp.setVisibility(View.VISIBLE);
             holder.ImgBtnUp.setOnClickListener(view ->{
                 Log.e("Up", "Subir ruta "+cursor.getInt(1));
+                Cursor detalle = db.rawQuery("SELECT * FROM "+ Constantes.TABLE_POINTS + " WHERE "+Constantes.CAMPO_ID_RUTA+ "="+cursor.getInt(1), null);
+                String pdetalle = "";
+
+                while (detalle.moveToNext()){
+                    pdetalle +=detalle.getDouble(2)+"|"+detalle.getDouble(3)+"|"+detalle.getString(4)+"|";
+                }
+                 //Log.e("Detalle ",pdetalle);
+                this.ubicacionModel = new UbicacionModel();
+                this.ubicacionModel.setIdRuta(routeModel.getId());
+                this.ubicacionModel.setIdUbicacion(0);
+                this.ubicacionModel.setLatlong(pdetalle);
+
+                ubicacionView = new UbicacionView() {
+                    @Override
+                    public void OnSuccesUbicacion(String msg) {
+                        //Toasty.success(context, msg, Toasty.LENGTH_SHORT);
+                        ListRouteAdapter.this.notifyDataSetChanged();
+                        ListRouteAdapter.this.notifyItemChanged(position);
+                    }
+
+                    @Override
+                    public void OnErrorUbicacion(String error) {
+                        Toasty.error(context, error, Toasty.LENGTH_SHORT);
+                    }
+                };
+
+                ubicacionPresenter = new UbicacionPresenterImpl(ubicacionView, new UbicacionInteractorImpl());
+                ubicacionPresenter.OnRegisterUbicacion(this.ChargueDataUbication("reg_ubicacion"));
             });
             holder.Button.setVisibility(View.GONE);
         }else{
@@ -154,6 +188,17 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
                 AlertDialog dialog = builder.create();
                 dialog.show();
             });
+        }else if(routeModel.getEstado().equals("VER")){
+            holder.ImgBtnUp.setVisibility(View.GONE);
+            holder.Button.setVisibility(View.VISIBLE);
+
+            holder.Button.setOnClickListener(view ->{
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("routeModel",routeModel);
+                view.getContext().startActivity(new Intent(view.getContext(), ViewRecord.class).putExtras(bundle).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            });
         }
 
 
@@ -163,6 +208,14 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
         RestModel restModel = new RestModel();
         restModel.setContext(context);
         restModel.setParameters(Charge.getInstance().genUnion(this.unionModel));
+        restModel.setLink(Link_Base+command);
+        return restModel;
+    }
+
+    public RestModel ChargueDataUbication(String command){
+        RestModel restModel = new RestModel();
+        restModel.setContext(context);
+        restModel.setParameters(Charge.getInstance().genUbication(this.ubicacionModel));
         restModel.setLink(Link_Base+command);
         return restModel;
     }

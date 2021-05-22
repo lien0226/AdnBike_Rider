@@ -9,6 +9,10 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +20,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AdnBikeRider">
+        android:theme="@style/Theme.AdnBikeRider"
+        android:usesCleartextTraffic="true">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -31,8 +36,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".mvp.v.ViewRecord"
+            android:label="@string/title_activity_view_record"></activity>
+        <activity
             android:name=".mvp.v.RouteMap"
-            android:label="@string/title_activity_route_map"></activity>
+            android:label="@string/title_activity_route_map" />
         <activity android:name=".mvp.v.CreateRoute" />
         <activity android:name=".mvp.v.GroupRoutes" />
         <activity android:name=".mvp.v.CreateGroup" />
@@ -47,6 +55,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
     </application>
 
 </manifest>
