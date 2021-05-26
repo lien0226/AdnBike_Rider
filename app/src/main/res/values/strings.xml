@@ -8,4 +8,6 @@
     <string name="name">Name</string>
     <string name="title_activity_route_map">Map</string>
     <string name="title_activity_view_record">Map</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

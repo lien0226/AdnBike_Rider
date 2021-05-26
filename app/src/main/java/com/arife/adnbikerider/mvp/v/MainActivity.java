@@ -11,6 +11,7 @@ import com.arife.adnbikerider.AppData.Adapters.ViewPagerAdapter;
 import com.arife.adnbikerider.AppData.Fragments.FragmentGroups;
 import com.arife.adnbikerider.AppData.Fragments.FragmentMyRoutes;
 import com.arife.adnbikerider.AppData.Fragments.FragmentPost;
+import com.arife.adnbikerider.AppData.Fragments.FragmentProfile;
 import com.arife.adnbikerider.AppData.Fragments.PendingMove;
 import com.arife.adnbikerider.AppData.Sesion;
 import com.arife.adnbikerider.R;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements PendingMove {
         this.pagerAdapter.AddFragment(new FragmentGroups(this),"");
         this.pagerAdapter.AddFragment(new FragmentMyRoutes(),"");
         this.pagerAdapter.AddFragment(new FragmentPost(),"");
+        this.pagerAdapter.AddFragment(new FragmentProfile(), "");
 
         this.viewPagerHome.setAdapter(this.pagerAdapter);
         this.tabLayoutHome.setupWithViewPager(this.viewPagerHome);
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements PendingMove {
         this.tabLayoutHome.getTabAt(0).setIcon(R.drawable.ic_network);
         this.tabLayoutHome.getTabAt(1).setIcon(R.drawable.ic_placeholder);
         this.tabLayoutHome.getTabAt(2).setIcon(R.drawable.ic_social_media);
+        this.tabLayoutHome.getTabAt(3).setIcon(R.drawable.ic_person);
     }
 
     @Override

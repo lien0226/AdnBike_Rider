@@ -40,7 +40,6 @@ public class GetRouteInteractorImpl implements GetRouteInteractor, ServerRestRes
                 if (jsonObject.getString("error").equals("0")){
                     jsonArray = jsonObject.getJSONArray("data");
                     List<RouteModel> listRoute = new ArrayList<>();
-                    Log.e("tagarray", jsonArray.toString());
                     for (int i=0; i<jsonArray.length();i++){
                         JSONObject job = jsonArray.getJSONObject(i);
                         RouteModel routeModel = new RouteModel();

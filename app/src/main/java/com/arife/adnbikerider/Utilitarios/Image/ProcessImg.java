@@ -28,9 +28,6 @@ public class ProcessImg {
     private Context context;
     private Activity activity;
     private RequestQueue request;
-    private JsonObjectRequest jsonObjectRequest;
-    private ProgressDialog dialog;
-    private GroupModel groupModel;
     private  OnImageResponse onImageResponse;
 
     public ProcessImg(Context context, Activity activity,OnImageResponse onImageResponse) {
@@ -38,7 +35,6 @@ public class ProcessImg {
         this.activity = activity;
         request = Volley.newRequestQueue(this.context);
         this.onImageResponse = onImageResponse;
-        //onImageResponse = null;
     }
 
     public void starCrop(@NonNull Uri uri){
@@ -79,11 +75,6 @@ public class ProcessImg {
         ImageRequest imageRequest = new ImageRequest(rutaImg, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {
-
-                //el group model esta vacio no esta instanciado por eso pero si lo instancio borrara los datos
-                //donde implementas esa interfaz?
-                //cual de todas :bv
-                //group mdel
                 ProcessImg.this.onImageResponse.OnImage(response);
             }
         }, 0, 0, ImageView.ScaleType.CENTER, null, new Response.ErrorListener() {

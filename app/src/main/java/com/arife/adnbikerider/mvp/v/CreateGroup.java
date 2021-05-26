@@ -129,7 +129,7 @@ public class CreateGroup extends AppCompatActivity implements CityView, GroupVie
                     Toasty.error(getApplicationContext(), "Selecciona una opcion", Toasty.LENGTH_SHORT).show();
                 }else{
                     //String sCity = parent.getItemAtPosition(position).toString();
-                    Log.e("Ciudad ; ",position+" "+listCity.get(position).getCodigo());
+                    //Log.e("Ciudad ; ",position+" "+listCity.get(position).getCodigo());
                     cod = listCity.get(position).getCodigo();
                     // Toasty.success(getApplicationContext(), listCity.get(position).toString(), Toasty.LENGTH_SHORT).show();
                 }

@@ -26,7 +26,7 @@ public class UbicacionInteractorImpl implements UbicacionInteractor, ServerRestR
             try {
                 jsonObject = new JSONObject(Response);
                 if (jsonObject.getString("error").equals("0")){
-                    this.onFinishUbicacion.OnSucces("mensaje");
+                    this.onFinishUbicacion.OnSucces("Ruta Subida");
                 }else{
                     this.onFinishUbicacion.OnError(jsonObject.getString("mensaje"));
                 }

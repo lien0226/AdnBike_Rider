@@ -31,6 +31,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
 import static com.arife.adnbikerider.Utilitarios.Charge.Base_img;
@@ -67,17 +68,15 @@ public class ListGroupAdapter extends RecyclerView.Adapter<ListGroupAdapter.MyVi
         holder.idGroup.setText(String.valueOf(groupModel.getId()));
 
         if (groupModel.getImage()!=null){
-
-            //Log.e("no null",Base_img+groupModel.getImage());
             OnImageResponse onImageResponse = new OnImageResponse() {
                 @Override
                 public void OnImage(Bitmap bitmap) {
-                    holder.imageView.setImageBitmap(bitmap);
+                    holder.circleImageView.setImageBitmap(bitmap);
                 }
 
                 @Override
                 public void OnErrorImage(String error) {
-                    holder.imageView.setImageResource(R.drawable.img_base);
+                    holder.circleImageView.setImageResource(R.drawable.img_base);
                 }
             };
             processImg = new ProcessImg(this.context, this.activity,onImageResponse);
@@ -85,8 +84,8 @@ public class ListGroupAdapter extends RecyclerView.Adapter<ListGroupAdapter.MyVi
 
 
         }else{
-            holder.imageView.setImageResource(R.drawable.img_base);
-            //Log.e("error img","null");
+            holder.circleImageView.setImageResource(R.drawable.img_base);
+
         }
         holder.linearLayout.setOnClickListener(view -> {
 
@@ -109,6 +108,7 @@ public class ListGroupAdapter extends RecyclerView.Adapter<ListGroupAdapter.MyVi
         private EditText idGroup;
         private LinearLayout linearLayout;
         private ImageView imageView;
+        private CircleImageView circleImageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -117,7 +117,7 @@ public class ListGroupAdapter extends RecyclerView.Adapter<ListGroupAdapter.MyVi
             idGroup = itemView.findViewById(R.id.idGroup);
             groupName = itemView.findViewById(R.id.group_name);
             descriptionGroup = itemView.findViewById(R.id.description_group);
-            imageView = itemView.findViewById(R.id.img_group);
+            circleImageView = itemView.findViewById(R.id.img_group);
 
         }
     }

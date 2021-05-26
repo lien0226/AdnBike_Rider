@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_route_map);
         this.InitRoute = findViewById(R.id.InitRoute);
         this.DistanceRecord = findViewById(R.id.DistanceRecord);
@@ -73,8 +75,8 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
                     1);
             return;
         }
-        Bundle bundle = getIntent().getExtras();
 
+        Bundle bundle = getIntent().getExtras();
         if (bundle!=null){
             routeModel = (RouteModel) bundle.getSerializable("RouteModel");
         }
@@ -142,26 +144,29 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
                                         //RouteMap.this.distance.add(new LatLng(location.getLatitude(), location.getLongitude()));
                                         RouteMap.this.datetime.add(UtilsGps.DateToMillisecons());
 
+                                        // Toast.makeText(RouteMap.this, "Id "+a+" | "+mMap.getMyLocation().distanceTo(location), Toast.LENGTH_SHORT).show();
+                                        if (RouteMap.this.pointsL.size()>1){
+                                            RouteMap.this.paintPoints(RouteMap.this.pointsL, RouteMap.this.datetime);
+                                        }
+
                                         ContentValues values = new ContentValues();
                                         values.put(Constantes.CAMPO_ID,0);
                                         values.put(Constantes.CAMPO_ID_RUTA,routeModel.getId());
                                         values.put(Constantes.CAMPO_LONGITUD, location.getLongitude());
                                         values.put(Constantes.CAMPO_LATITUD,location.getLatitude());
                                         values.put(Constantes.TIMESECOND,UtilsGps.DateToMillisecons());
+                                        values.put(Constantes.VELOCIDAD,velocidad);
+                                        values.put(Constantes.KMR, UtilsGps.DistanceMyVehicle(m).split(" ")[2]+" "+UtilsGps.DistanceMyVehicle(m).split(" ")[3]);
+                                        values.put(Constantes.COUNT, chronometer.getText().toString());
                                         SQLiteDatabase db = RouteMap.this.connectionSqlLite.getWritableDatabase();
                                         Long a = db.insert(Constantes.TABLE_POINTS,Constantes.CAMPO_ID,values);
                                         RouteMap.this.connectionSqlLite.close();
 
-                                        // Toast.makeText(RouteMap.this, "Id "+a+" | "+mMap.getMyLocation().distanceTo(location), Toast.LENGTH_SHORT).show();
-                                        if (RouteMap.this.pointsL.size()>1){
-                                            RouteMap.this.paintPoints(RouteMap.this.pointsL, RouteMap.this.datetime);
-                                        }
-
                                         db = RouteMap.this.connectionSqlLite.getReadableDatabase();
 
-                                       Cursor cursor = db.rawQuery("SELECT * FROM "+Constantes.TABLE_POINTS,null);
+                                       Cursor cursor = db.rawQuery("SELECT * FROM "+Constantes.TABLE_POINTS+" WHERE "+Constantes.CAMPO_ID_RUTA+"="+routeModel.getId(),null);
                                         while (cursor.moveToNext()){
-                                            Log.e("Cursor " ,cursor.getInt(1) +" | "+ cursor.getDouble(2)+" - "+ cursor.getDouble(3)+" | "+ cursor.getString(4));
+                                            Log.e("Cursor " ,cursor.getInt(1) +" | "+ cursor.getDouble(2)+" - "+ cursor.getDouble(3)+" | "+ cursor.getString(4)+" | "+ cursor.getDouble(5)+" | "+ cursor.getString(6)+" | "+ cursor.getString(7));
                                         }
                                     }
                                 }
@@ -180,8 +185,6 @@ public class RouteMap extends FragmentActivity implements OnMapReadyCallback, Vi
     }
 
     float m = 0;
-    //private static DecimalFormat df = new DecimalFormat("0.00000");
-
     int tiempo;
     double velocidad;
     int distancia;

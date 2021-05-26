@@ -93,7 +93,7 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
                 String pdetalle = "";
 
                 while (detalle.moveToNext()){
-                    pdetalle +=detalle.getDouble(2)+"|"+detalle.getDouble(3)+"|"+detalle.getString(4)+"|";
+                    pdetalle +=detalle.getDouble(2)+"|"+detalle.getDouble(3)+"|"+detalle.getString(4)+"|"+detalle.getDouble(5)+"|"+detalle.getString(6)+"|"+detalle.getString(7)+"|";
                 }
                  //Log.e("Detalle ",pdetalle);
                 this.ubicacionModel = new UbicacionModel();
@@ -104,14 +104,14 @@ public class ListRouteAdapter extends RecyclerView.Adapter<ListRouteAdapter.MyVi
                 ubicacionView = new UbicacionView() {
                     @Override
                     public void OnSuccesUbicacion(String msg) {
-                        //Toasty.success(context, msg, Toasty.LENGTH_SHORT);
+                        Toasty.success(context, msg, Toasty.LENGTH_SHORT).show();
                         ListRouteAdapter.this.notifyDataSetChanged();
                         ListRouteAdapter.this.notifyItemChanged(position);
                     }
 
                     @Override
                     public void OnErrorUbicacion(String error) {
-                        Toasty.error(context, error, Toasty.LENGTH_SHORT);
+                        Toasty.error(context, error, Toasty.LENGTH_SHORT).show();
                     }
                 };
 

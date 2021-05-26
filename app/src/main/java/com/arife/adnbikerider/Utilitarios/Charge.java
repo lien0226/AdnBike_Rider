@@ -3,6 +3,7 @@ package com.arife.adnbikerider.Utilitarios;
 import com.arife.adnbikerider.AppData.Sesion;
 import com.arife.adnbikerider.mvc.m.GroupModel;
 import com.arife.adnbikerider.mvc.m.LoginModel;
+import com.arife.adnbikerider.mvc.m.PerfilModel;
 import com.arife.adnbikerider.mvc.m.RouteModel;
 import com.arife.adnbikerider.mvc.m.UbicacionModel;
 import com.arife.adnbikerider.mvc.m.UnionModel;
@@ -150,6 +151,14 @@ public class Charge {
         this.sesion = Sesion.getInstance();
 
         String url =  Link_Base+aurl+"?idgrupo="+groupModel.getId()+"&usuario="+this.sesion.readSesion().getUsername();
+        return url;
+    }
+
+    public String getGetPerfil(){
+        String aurl="dat_perfil";
+        this.sesion = Sesion.getInstance();
+
+        String url =  Link_Base+aurl+"?usuario="+this.sesion.readSesion().getUsername();
         return url;
     }
 
