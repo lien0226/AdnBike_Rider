@@ -1,12 +1,22 @@
 package com.arife.adnbikerider.mvc.m;
 
 public class PerfilModel {
+    private String Id;
     private String Usuario;
     private String Email;
     private String Nombres;
     private String Apellidos;
     private String Celular;
     private String Direccion;
+    private String Imagen;
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
 
     public String getUsuario() {
         return Usuario;
@@ -54,5 +64,13 @@ public class PerfilModel {
 
     public void setDireccion(String direccion) {
         Direccion = direccion;
+    }
+
+    public String getImagen() {
+        return Imagen;
+    }
+
+    public void setImagen(String imagen) {
+        Imagen = imagen;
     }
 }

@@ -32,7 +32,7 @@
                     android:id="@+id/ImageGroup"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
-                    tools:srcCompat="@drawable/img_base" />
+                    android:src="@drawable/img_base" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

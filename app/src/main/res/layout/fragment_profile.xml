@@ -6,6 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".AppData.Fragments.FragmentProfile">
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -40,9 +47,11 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="190dp"
+            android:layout_marginTop="170dp"
             android:text="Anders Neill Romero Quispe"
             android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:textAlignment="center" />
 
         <androidx.cardview.widget.CardView
@@ -232,22 +241,13 @@
 
                     </LinearLayout>
 
-
-
                 </LinearLayout>
 
-
-
-
-                <!--
-
-
-
--->
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
+    </ScrollView>
 
 </FrameLayout>

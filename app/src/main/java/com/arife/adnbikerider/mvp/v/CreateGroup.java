@@ -171,7 +171,6 @@ public class CreateGroup extends AppCompatActivity implements CityView, GroupVie
                 break;
             case R.id.ImageGroup:
                     this.ChargeImage();
-                    Log.e("click","imageview");
                 break;
         }
     }
@@ -185,7 +184,7 @@ public class CreateGroup extends AppCompatActivity implements CityView, GroupVie
 
     @Override
     public void OnErrorGroup(String error) {
-        Toasty.error(this, error);
+        Toasty.error(this, error).show();
     }
 
     public RestModel ChargueData(GroupModel groupModel){

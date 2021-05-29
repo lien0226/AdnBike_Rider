@@ -18,25 +18,30 @@ public class UserInteractorImpl implements UserInteractor, ServerRestResponse {
     @Override
     public void OnRegisterUser(RestModel restModel, OnFinishUser onFinishUser) {
         restModel.setRestResponse(this);
+        this.onFinishUser = onFinishUser;
         if (restModel.getParameters().get("opcion").equals("N")){
             if (TextUtils.isEmpty(restModel.getParameters().get("id").toString())){
                 this.onFinishUser.OnError("sin id regitro");
+                return;
             }else if(TextUtils.isEmpty(restModel.getParameters().get("email").toString())){
                 this.onFinishUser.OnError("ingrese su correo");
+                return;
             }else if(TextUtils.isEmpty(restModel.getParameters().get("login").toString())){
                 this.onFinishUser.OnError("ingrese un nombre de usuario");
+                return;
             }else if(TextUtils.isEmpty(restModel.getParameters().get("password").toString())){
                 this.onFinishUser.OnError("ingrese una contraseña");
+                return;
             }
         }else if(restModel.getParameters().get("opcion").equals("V")){
             if (TextUtils.isEmpty(restModel.getParameters().get("email").toString())){
                 this.onFinishUser.OnError("ingrese un correo");
+                return;
             }else if(TextUtils.isEmpty(restModel.getParameters().get("verificacion").toString())){
                 this.onFinishUser.OnError("ingrese el codigo de verificacion");
+                return;
             }
         }
-
-        this.onFinishUser = onFinishUser;
         Rest.getInstance().sendPostRequestServer(restModel);
     }
 
@@ -68,6 +73,7 @@ public class UserInteractorImpl implements UserInteractor, ServerRestResponse {
         }else{
             this.onFinishUser.OnError("Response null");
         }
+        //chamo igual crashea conectare para ver el log
     }
 
     @Override

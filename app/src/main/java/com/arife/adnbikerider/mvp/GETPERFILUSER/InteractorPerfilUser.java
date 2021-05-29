@@ -30,22 +30,6 @@ public class InteractorPerfilUser implements PerfilUserInteractor, ServerRestRes
                 if (jsonObject.getString("error").equals("0")){
 
                         JSONArray jsonArray = jsonObject.getJSONArray("data");
-                        // me das lastima prime V:
-                        //dale
-                        //porque salio error en el anterior? si no se ha movido nada
-                        //cual?
-                        //abajo salió error del json array
-                        //ya no sale
-                        // eso no puedes? :V
-                        //gg toy arto
-                        // cuando quieres tomar un jsonObject de un json array jalas por posicion
-                        //but no queria jalar por posicion gg
-                        // pndj a lo que me refiero es que no puedes hacer un new JSONObject y pasarle
-                        // el jsonArray.tostring  pero pa que tiene getJSONArray el JSOBObject V:
-                        //para obtener el json array pero ese se compone de jsonobject
-                    //gg [] <- eso es json array {} <- esto es json object
-                    //gopz renuncio :v
-                    //gg
                         Log.e("TAG",jsonArray.length()+"");
                         JSONObject jsonChild = jsonArray.getJSONObject(0);
 
@@ -55,6 +39,7 @@ public class InteractorPerfilUser implements PerfilUserInteractor, ServerRestRes
                         p.setApellidos(jsonChild.getString("Apellidos"));
                         p.setCelular(jsonChild.getString("Celular"));
                         p.setDireccion(jsonChild.getString("Direccion"));
+                        p.setImagen(jsonChild.getString("Image"));
 
                         this.onFinishPerfil.OnSuccesPerfil(p);
 

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Base64;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.arife.adnbikerider.R;
 import com.arife.adnbikerider.mvc.m.GroupModel;
 import com.yalantis.ucrop.UCrop;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 public class ProcessImg {
@@ -84,5 +86,14 @@ public class ProcessImg {
             }
         });
         request.add(imageRequest);
+    }
+
+    public String ImgToString(Bitmap bitmap){
+        ByteArrayOutputStream array = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,array);
+        byte[] imageByte = array.toByteArray();
+        String imageString = Base64.encodeToString(imageByte, Base64.DEFAULT);
+        return imageString;
+
     }
 }

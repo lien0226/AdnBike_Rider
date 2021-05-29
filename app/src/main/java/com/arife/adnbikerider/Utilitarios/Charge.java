@@ -18,6 +18,7 @@ public class Charge {
     public static String Base_get = "http://181.224.251.170:9090/AdnRoutes/Routes";
     public static String GetRoutePerson = Link_Base+"myroutes";
     public static String Base_img ="http://181.224.251.170:9090/asset/adnroutes/images/";
+    public static String Base_img_prf ="http://181.224.251.170:9090/asset/adnroutes/perfil/";
 
     private static Charge charge;
     private Sesion sesion;
@@ -160,6 +161,52 @@ public class Charge {
 
         String url =  Link_Base+aurl+"?usuario="+this.sesion.readSesion().getUsername();
         return url;
+    }
+
+    public Map genSavePerfil(PerfilModel perfilModel){
+        this.sesion = Sesion.getInstance();
+        Map<String, Object> map = new HashMap<>();
+        map.put("opcion","N");
+        map.put("id",String.valueOf(perfilModel.getId()));
+        String name[] = (perfilModel.getNombres().split(" "));
+        String last[] = (perfilModel.getApellidos().split(" "));
+        String pnombre="",snombre="";
+        String apaterno="",amaterno="";
+        int a,b;
+        if ((name.length)>1){
+            a = (int) Math.ceil((float) (name.length)/2);
+            for (int i=0;i<a;i++){
+                pnombre += name[i]+" ";
+            }
+            for (int j=a; j<name.length; j++){
+                snombre += name[j]+" ";
+            }
+            map.put("pnombre", pnombre.trim());
+            map.put("snombre", snombre.trim());
+        }
+
+        if ((last.length)>1){
+            a = (int) Math.ceil((float) (last.length)/2);
+            for (int i=0;i<a;i++){
+                apaterno += last[i]+" ";
+            }
+            for (int j=a; j<last.length; j++){
+                amaterno += last[j]+" ";
+            }
+            map.put("apaterno", apaterno.trim());
+            map.put("amaterno", amaterno.trim());
+        }
+
+        //map.put("pnombre",perfilModel.getNombres());
+        //map.put("snombre", perfilModel.getNombres());
+        //map.put("apaterno",perfilModel.getApellidos());
+        //map.put("amaterno",perfilModel.getApellidos());
+        map.put("celular",perfilModel.getCelular());
+        map.put("direccion",perfilModel.getDireccion());
+        map.put("image",perfilModel.getImagen());
+        map.put("usuario",this.sesion.readSesion().getUsername());
+
+        return map;
     }
 
 

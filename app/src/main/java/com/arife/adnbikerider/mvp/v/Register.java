@@ -104,5 +104,6 @@ public class Register extends AppCompatActivity implements UserView,View.OnClick
         return restModel;
     }
 
+    //y si los campos está vacios?
 
 }

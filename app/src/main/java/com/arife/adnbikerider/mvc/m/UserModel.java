@@ -6,14 +6,14 @@ public class UserModel implements Serializable {
 
     private String opcion;
     private int id;
-    private String dni;
-    private String primerNombre;
-    private String segundoNombre;
-    private String aPaterno;
-    private String aMaterno;
-    private String celular;
-    private String distrito;
-    private String direccion;
+    private String dni="";
+    private String primerNombre="";
+    private String segundoNombre="";
+    private String aPaterno="";
+    private String aMaterno="";
+    private String celular="";
+    private String distrito="";
+    private String direccion="";
     private String email;
     private String login;
     private String password;
